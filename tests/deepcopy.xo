@@ -1,0 +1,20 @@
+~method Get{
+	~comment print 0: *0 1: *1
+	~map ret
+	~getFromMap *0 *1 ret
+	~comment print map: *0 returnwert: *ret
+	~return ret
+}
+
+~print Deep Copy example
+
+~array tmp tmp2 tmp3
+~addToArray tmp <x y>
+~addToArray tmp b
+~addToArray tmp c
+
+~array tmp4 tmp5
+~print 0,0: *( <*(<tmp 0> Get) 0> Get)
+~print 0,1: *( <*(<tmp 0> Get) 1> Get)
+~print 1,1: *( <tmp 1> Get)
+~print 1,2: *( <tmp 2> Get)

@@ -1,0 +1,22 @@
+~method For{
+	~comment wenn kein index angegeben wurde, dann wird er auf i gesetzt!
+	~comment std. muss um 1 hochadiert werden
+	
+	~comment lessorequal wär besser!
+	~comment equal sollte man vorher auflösen mussen...
+	~comment print test: *test
+	
+	~notEqual start end [] [^] {
+		~call [][ ^ *index=*start] *code
+	}
+	~variable newstart
+	~setVariable newstart=*start
+	~addToVariable newstart 1
+	~notEqual start end [] [ ^ start=*newstart] For
+	
+}
+
+~comment FOR SCHLEIFE TEST
+~call r [ start=0 end=4 index=j code={
+	~print success: *j !
+	} ] For

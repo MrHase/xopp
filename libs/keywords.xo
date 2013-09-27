@@ -1,0 +1,9 @@
+~object Keyword
+
+~method Keyword.CheckMe {
+	~c hier erwarten wir ein String... d.h. kein Array mehr
+	~c Parameter
+	~c if
+	~c puts
+	~c ...
+}

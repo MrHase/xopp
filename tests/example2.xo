@@ -1,0 +1,45 @@
+~print Blub
+
+~print Rekursion test
+~map p r
+~method Rekursion {
+	~variable ptmp 
+	~setVariable ptmp=*counter
+	~addToVariable ptmp 1 
+	~print counter: *counter abbruch: *abbruch ptmp: *ptmp
+	~notEqual counter abbruch [empty=0] [abbruch=*abbruch counter=*ptmp] Rekursion 
+	~equal counter abbruch  [empty=0] [counter=*counter] {
+		~print HALLO, bei 5 muss ich hier ankommen... mal sehen was in counter ist: *counter
+		~print JUHU!!!
+	}
+}
+
+~method While {
+	~print while aufgerufen..
+	~map r
+	~print *code
+	~call r [variable=0] *code
+} 
+
+~method For{
+	~comment lessorequal wär besser!
+	~comment equal sollte man vorher auflösen mussen...
+	~comment [] sollte gehen..
+	~comment rückgabe sollte direkt in die map neu überschreiben!
+	~notEqual start end [empty=0] [i=*i code=*code] {
+		~call [empty=0][i=*i] *code
+	}
+	~variable newstart
+	~setVariable newstart=*start
+	~addToVariable newstart 1 
+	~notEqual start end [empty=0] [ start=*newstart end=*end code=*code ] For
+	
+}
+~comment HIER WIRD DIE REKURSION GESTARTET
+~call r [abbruch=5 counter=1]  Rekursion 
+
+
+~call r [ v1=4 code={~print success} ] While
+~comment FOR SCHLEIFE
+~call r [ start=0 end=4 code={~print success: *i !} ] For
+

@@ -1,0 +1,13 @@
+~method +{
+	~comment print 0: *0 1: *1 2: *2
+	~variable ret
+	~setVariable ret *0
+	~+! ret *1
+	~return ret
+}
+~variable a
+~setVariable a=5
+~print a: *a a+1: *(<1 *a> +)
+~print a: *a a+1+1: *(< *(<1 *a> +) 1> +)
+
+

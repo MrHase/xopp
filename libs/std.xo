@@ -1,0 +1,124 @@
+~comment For
+~comment adapt kann bestimmt auch selbst geschrieben werden
+~object Std
+
+~method Std.GetKeys {
+	~adapt map 0
+	~var keys
+	~keys *map keys
+	~return keys
+}
+
+~method Std.Count {
+	~adapt map 0
+	~var count
+	~count *map count
+	~return count
+}
+~method Std.ClearMap {
+	~adapt name 0
+	
+	~call if <(Count <*name>) <ne> <0> <*name>{
+		~adapt name 0
+		~var firstkey
+		~comment keys is an array
+		~getFromMap (GetKeys <*name>) 0 firstkey
+		~removeFromMap *name #firstkey
+		~call ClearMap <*name>
+		}  >
+	
+}
+
+~method Std.AddToMap {
+	~adapt map 0
+	~adapt key 1
+	~adapt value 2
+	~addToMap *map #key #value
+}
+
+~method Std.GetFromMap {
+	~adapt map 0
+	~adapt name 1
+	~var value
+	~getFromMap *map #name value
+	~return value
+}
+
+~method Std.SetVariable {
+	~adapt map 0
+	~adapt value 1
+	~comment ich bin mir nicht sicher ob wir wirklich die map clearen sollten..
+	~call ClearMap <*map>
+	~call AddToMap <*map <0> *value>
+}
+~method Std.AddToArray {
+	~adapt map 0
+	~adapt value 1
+	~call AddToMap <*map (Count <*map>) *value>
+}
+
+
+
+
+
+~method Std.For{
+	~nexist start <0>
+	~nexist index <i>
+	~nexist inc <1>
+	~variable newstart
+	~call SetVariable <newstart *start> <>
+	~call + <*start *inc> newstart
+	
+	~notEqual start end [] [^] {
+		~call *code [ ^ *index=*start] []
+	}
+	~notEqual start end [] [ ^ start=*newstart] For
+	
+}
+
+
+~method Std.foreach{
+
+	~nexist start <0>
+	~adapt map 0
+	~adapt parameter 1
+	~adapt code 2
+
+	~call AddToMap <*parameter <key>    <(GetFromMap <(GetKeys <*map>) *start> )> >
+	~call AddToMap <*parameter <value>	<(GetFromMap <*map (GetFromMap <(GetKeys <*map>) *start	> )	>)>>
+	~c print code: *code
+	~call if [v1=*start compare=<ne> v2=*(Count <*map>) parameter=*parameter code=*code]
+	~call if [v1=*start compare=<ne> v2=*(Count <*map>) parameter=[map=*map start=(+ <*start <1>>) parameter=*parameter code=*code] code=*foreach]
+	
+}
+
+~method Std.if{
+	
+	~comment print 1 if aufgerufen mit 0: *0 1: *1 2: *2 3: *3
+	~adapt v1 0
+	~adapt compare 1
+	~adapt v2 2
+	~adapt parameter 3
+	~adapt code 4
+	
+	~?eq *compare <eq> [] <*v1 *v2 *code *parameter> {
+		~?eq 0 1 [] 3 *2
+	}
+	
+	~?eq *compare <ne> [] <*v1 *v2 *code *parameter> {
+		~?ne 0 1 [] 3 *2
+	}
+}
+
+~method Std.+{
+	~require 0
+	~require 1
+	~c print 0: *0 1: *1
+	~var result
+	~call SetVariable <*result *0>
+	~+! result *1
+	~return result
+}
+
+~global Std
+

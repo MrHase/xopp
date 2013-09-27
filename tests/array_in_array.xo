@@ -1,0 +1,5 @@
+~array tmp tmp2
+~getFromMap <<x y> b c> 0 tmp
+~print tmp: *tmp
+~getFromMap *tmp 0 tmp2
+~print tmp: *tmp2

@@ -1,0 +1,142 @@
+~object Object
+
+~method Object.New {
+	~c leere Methoden führen zum absturz...
+}
+~method Object.SPACE{
+	~print Hier muss mit call die parameter1 methode ausgeführt werden
+}
+
+~object Dictionary
+~global Dictionary
+
+~var Dictionary.map
+
+~method Dictionary.Set{
+	~adapt key 0
+	~adapt value 1
+	~addToMap map #key #value
+}
+~method Dictionary.Get {
+	~adapt key 0
+	~var value
+	~getFromMap *map #key value
+	~return value
+}
+~method Dictionary.Print{
+	~print map: #map
+}
+~method Dictionary.Count {
+	~var count
+	~count map count
+	~c print #count
+	~return count
+}
+~method Dictionary.Foreach{
+
+	~nexist start <0>
+	~adapt parameter 0
+	~adapt code 1
+	
+	~call AddToMap <*parameter <key>    <(GetFromMap <(Keys) *start> )> >
+	~call AddToMap <*parameter <value>	<(GetFromMap <*map (GetFromMap <(Keys) *start >)>)>>
+	
+	~call if [v1=*start compare=<ne> v2=*(Count) parameter=*parameter code=*code]
+	~call if [v1=*start compare=<ne> v2=*(Count) parameter=[map=*map start=(+ <*start <1>>) parameter=*parameter code=*code] code=*Foreach]
+	
+}
+~method Dictionary.Remove{
+	~adapt key 0
+	~var value
+	~call Get <*key> value
+	~removeFromMap *map #key
+	~return value
+}
+~method Dictionary.Keys {
+	~var keys
+	~keys *map keys
+	~return keys
+}
+~method Dictionary.Values {
+	~var keys
+	~var values
+	~keys *map keys
+	~call foreach < *keys <*values *map> {
+		~adapt 0 values
+		~adapt 1 map
+		~var realvalue
+		~getFromMap *map #value realvalue
+		~c print key: #key value: #value realvalue: #realvalue
+		~call AddToArray <*values <#realvalue>>
+	}>
+	~return values
+}
+~method Dictionary.ToString {
+	~print Dictionary: 
+	~comment so nich: call Foreach <<> {~print #key = #value}>
+}
+
+~object Array
+~global Array
+
+
+~method Array.CONSTRUCTOR{
+	~adapt v 0
+	~new Dictionary this.dict
+	~ foreach < *v  <>{
+		~c print value: #value key: #key 
+		~c call dict.Print
+		~call dict.Set <(dict.Count) *value>
+	}>
+	~comment hier muss das new Dictionary zeug rein...?
+}
+~method Array.Add{
+	~adapt value 0
+	~call dict.Set <(dict.Count) *value>
+}
+~method Array.Test{
+	~print hallo
+}
+~method Array.Print{
+	~put "
+	~call dict.Foreach <<>{
+		~c bp
+		~put #value ,
+	}>
+	~put "
+	~print
+}
+~object Number
+
+~object Character
+~var Character.char
+
+
+~object String
+~global String
+~c var String.array
+~c new Array String.array
+~method String.print{
+	~print string methode print aufgerufen
+	~call array.Print
+}
+~method String.CONSTRUCTOR{
+	~adapt char 0
+	~c new Array this.array <<t>>
+	~new Array this.array
+	~c print string contstructor aufgerufen mit #char
+	~call array.Add <*char>
+}
+~method String.CONCAT{
+	~adapt char 0
+	~c print string methode CONCAT aufgerufen mit #char
+	~call array.Add <*char>
+}
+~method String.SPACE{
+	~call array.Print
+}
+~method String.RETURN{
+	~c what_am_i <this>
+	~call array.Print
+}
+

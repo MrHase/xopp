@@ -1,0 +1,12 @@
+<xopp>
+  <project>
+	<application file="tests/test.xo">
+		<include file="libs/std.xo">
+			test
+		</include>
+		<include file="libs/objects.xo">
+			test
+		</include>
+	</application>
+  </project>
+</xopp>

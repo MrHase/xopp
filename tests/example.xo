@@ -1,0 +1,81 @@
+~print Blub
+
+~print Rekursion test
+~map p r
+~method Rekursion {
+	~variable ptmp 
+	~setVariable ptmp=*counter
+	~addToVariable ptmp 1 
+	~print counter: *counter abbruch: *abbruch ptmp: *ptmp
+	~notEqual counter abbruch [] [abbruch=*abbruch counter=*ptmp] Rekursion 
+	~equal counter abbruch  [] [counter=*counter] {
+		~print HALLO, bei 5 muss ich hier ankommen... mal sehen was in counter ist: *counter
+		~print JUHU!!!
+	}
+}
+
+~method While {
+	~print while aufgerufen..
+	~map r
+	~print *code
+	~Dcall r [variable=0] *condition
+	~Dequal r <true> [][code=*code condition=*condition]
+} 
+
+~method For{
+	~comment lessorequal wär besser!
+	~comment equal sollte man vorher auflösen mussen...
+	~comment <1,2,3> möglich machen!
+	~notEqual start end [] [i=*i code=*code] {
+		~call [][i=*i] *code
+	}
+	~variable newstart
+	~setVariable newstart=*start
+	~addToVariable newstart 1 
+	~notEqual start end [] [ start=*newstart end=*end code=*code ] For
+	
+}
+
+~method GenerateArray{
+	~return <0 1 1 rose 0>
+}
+
+~comment HIER WIRD DIE REKURSION GESTARTET
+~call r [abbruch=5 counter=1]  Rekursion 
+
+
+~call r [ v1=4 code={~print success} ] While
+~comment FOR SCHLEIFE
+~call r [ start=0 end=4 code={~print success: *i !} ] For
+
+~map test100 
+~array test200 test300 test400 test500
+~addToMap test100 t 3 
+~addToMap test100 t2 3 
+~print test100: *test100
+~call test100 <> GenerateArray
+~print test100: *test100
+
+
+~keys test100 test200
+~values test100 test300
+~print test200 keys: *test200
+~print test200 values: *test300
+~count test100 test400
+~print test100 length: *test400
+
+~GetFromMap test100 3 test500
+~print test100 at pos 3: *test500
+
+
+
+~map testmap
+~addToMap testmap hallo=3
+~addToMap testmap du=2
+~addToMap testmap da=1
+~print keys: * (GetKeys <testmap>)
+~print testmap: *testmap
+~print Clear map test:
+~call ClearMap <testmap>
+~print testmap: *testmap
+

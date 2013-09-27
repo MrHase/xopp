@@ -1,0 +1,67 @@
+~array tmp tmp2
+~getFromMap <<x y> b c> 0 tmp
+~print tmp: *tmp
+~getFromMap *tmp 0 tmp2
+~print tmp: *tmp2
+
+~comment FOR SCHLEIFE TEST
+~call For [end=4  code={
+		~print success i: *i !
+	}]
+	
+~call foreach <<a r r a y> {
+		~print *value
+		~call if <key eq <4> { 
+			~print dies sollte der letzte satz sein!
+		}> 
+	}>
+
+~print extrem:
+~ ( foreach <<a r r a y>{
+	~print key: *key value: *value
+	~call if <key eq <4> { 
+			~print dies sollte der letzte satz sein!
+		}>
+	}>
+	)
+
+
+~print test
+~print additionstest 1+2+3+4: *(+ <1 2 3 4> )	
+
+~object testobject
+~method testobject.toString {
+	~print yay ich bin IM object
+}
+~call testobject.toString
+~method testobject.toString {
+	~print yay ich bin überschrieben
+}
+~call testobject.toString
+
+~object testobject2:testobject:test
+~method testobject2.toString {
+	~print ich bin testobject2
+}
+~call testobject2.toString
+
+~object Char
+~method Char.New {
+	~print Char constructor aufgerufen
+	~require char
+	~copy char ...neues anlegen oder so
+	~id vom neuen object holen
+	~setzen des buchstabens
+	~id zurückgeben
+}
+
+~method Variable {
+	~adapt name 0
+	~print Variable aurgerufen with name: *name
+	~map *name
+}
+
+~comment variable testv1 testv2
+~call [] <testv1> Variable
+~setVariable testv1 10
+~print testv1 *testv1

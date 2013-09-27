@@ -1,0 +1,56 @@
+~method foreach{
+	~nexist start <0>
+	~adapt map 0
+	~adapt code 1
+	
+	~variable newstart
+	~setVariable newstart=*start
+	~addToVariable newstart 1
+	
+	
+	~variable length
+	~array keys
+	~keys *map keys
+	~count keys length
+	
+	~comment das geht leider nicht im folgenden ne! warum nicht? bug?
+	~variable key value
+	~getFromMap keys *start key
+	~getFromMap *map *key value
+	
+	~ne start length [] [^] {
+		~comment diese zeile geht irgendwie nicht... bug!
+		~comment print blub.keys: *keys length: *length 
+		~call [][ ^ *index=*start] *code
+	}
+	
+	~ne start length [] [ ^ start=*newstart] foreach
+	
+}
+
+~comment FOREACH TEST
+~map test
+~addToMap test a=100
+~addToMap test b=200
+~addToMap test c=300
+~addToMap test d=400
+
+~print simple test:
+~call r [map=test rotz=6 code={
+	~print key: *key value: *value rotz: *rotz
+}] foreach
+
+~print test with anonym array:
+~call r [map=<a r r a y> code={
+	~print key: *key value: *value
+}] foreach
+
+~print test with anonym array + noname parameter:
+~call [] <
+	<a r r a y>{~print key: *key value: *value}
+>foreach
+
+~print extrem:
+~comment ( <<a r r a y>{
+	~print key: *key value: *value
+	}>foreach)
